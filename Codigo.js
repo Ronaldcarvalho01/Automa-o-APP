@@ -1,4 +1,26 @@
+function verificarValoresUnificado() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Controle de Estoque'); // Aba a ser verificada
+  const LIMITE = 50; // Valor limite
+  const destinatario = "destino1@email.com", "destino2@email.com"; // E-mail do destinatário
+  const urlPlanilha = SpreadsheetApp.getActiveSpreadsheet().getUrl(); // Link da planilha
 
+  // Configuração das células a serem verificadas
+  const celulas = [
+    { valor: "C5", titulo: "C4" },
+    { valor: "E5", titulo: "E4" },
+    { valor: "F5", titulo: "F4" }
+  ];
+
+  // Variável para acumular os itens com estoque abaixo do limite
+  let itensAbaixoDoLimite = [];
+
+  // Iterar sobre as células para verificar os valores
+  celulas.forEach(celula => {
+    const valor = sheet.getRange(celula.valor).getValue(); // Valor da célula
+    const titulo = sheet.getRange(celula.titulo).getValue(); // Título correspondente
+
+    if (valor < LIMITE) { // Se o valor estiver abaixo do limite, adiciona ao array
+      itensAbaixoDoLimite.push({
         produto: titulo,
         quantidade: valor
       });
@@ -64,5 +86,3 @@ function criarAcionadorSemanal() {
     .atHour(9) // Define a hora (9h)
     .create();
 }
-
---
